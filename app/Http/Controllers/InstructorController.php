@@ -21,4 +21,29 @@ class InstructorController extends Controller
             'totalCourses', 'publishedCourses', 'draftCourses', 'totalViews', 'recentCourses'
         ));
     }
+
+    public function profile()
+    {
+        return view('instructor.profile');
+    }
+
+    public function createCourse()
+    {
+        return view('instructor.create-course');
+    }
+
+    public function manageCourse()
+    {
+        return view('instructor.manage-course');
+    }
+
+    public function createQuiz()
+    {
+        return view('instructor.create-quiz');
+    }
+
+    public function gradeTests()
+    {
+        return view('instructor.grade-tests');
+    }
 }

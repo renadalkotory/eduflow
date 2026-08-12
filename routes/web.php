@@ -42,6 +42,11 @@ Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])->na
 Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])->name('cart.update');
 
 Route::get('/instructor/dashboard', [InstructorController::class, 'dashboard'])->name('instructor.dashboard');
+Route::get('/instructor/profile', [InstructorController::class, 'profile'])->name('instructor.profile');
+Route::get('/instructor/courses/create', [InstructorController::class, 'createCourse'])->name('instructor.createCourse');
+Route::get('/instructor/courses/manage', [InstructorController::class, 'manageCourse'])->name('instructor.manageCourse');
+Route::get('/instructor/quiz/create', [InstructorController::class, 'createQuiz'])->name('instructor.createQuiz');
+Route::get('/instructor/grade-tests', [InstructorController::class, 'gradeTests'])->name('instructor.gradeTests');
 
 Route::get('/student/courses/{course}', [CourseController::class, 'show'])
     ->name('student.course.details');
