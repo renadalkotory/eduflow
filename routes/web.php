@@ -1,10 +1,7 @@
 <?php
-<<<<<<< HEAD
 
-=======
 use App\Http\Controllers\Student\GradeController;
 use App\Http\Controllers\Student\CourseController;
->>>>>>> origin/feature/student-course-grades
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstructorController;
@@ -34,12 +31,10 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])->name('cart.update');
 
-<<<<<<< HEAD
 Route::get('/instructor/dashboard', [InstructorController::class, 'dashboard'])->name('instructor.dashboard');
-=======
+
 Route::get('/student/courses/{course}', [CourseController::class, 'show'])
     ->name('student.course.details');
 
-    Route::get('/student/grades', [GradeController::class, 'index'])
+Route::get('/student/grades', [GradeController::class, 'index'])
     ->name('student.grades');
->>>>>>> origin/feature/student-course-grades

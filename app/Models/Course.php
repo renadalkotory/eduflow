@@ -3,18 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-<<<<<<< HEAD
-=======
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
->>>>>>> origin/feature/student-course-grades
 
 class Course extends Model
 {
     protected $table = 'courses';
-<<<<<<< HEAD
-    protected $primaryKey = 'course_id';
-=======
 
     protected $primaryKey = 'course_id';
 
@@ -22,7 +16,6 @@ class Course extends Model
 
     public $incrementing = true;
 
->>>>>>> origin/feature/student-course-grades
     public $timestamps = false;
 
     protected $fillable = [
@@ -36,17 +29,12 @@ class Course extends Model
         'status',
     ];
 
-<<<<<<< HEAD
-    protected $casts = [
-        'created_at' => 'datetime',
-    ];
-}
-=======
     protected function casts(): array
     {
         return [
             'price' => 'decimal:2',
             'views' => 'integer',
+            'created_at' => 'datetime',
         ];
     }
 
@@ -61,17 +49,19 @@ class Course extends Model
             'user_id'
         );
     }
+
     /**
- * Category this course belongs to.
- */
-public function category(): BelongsTo
-{
-    return $this->belongsTo(
-        Category::class,
-        'category_id',
-        'category_id'
-    );
-}
+     * Category this course belongs to.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(
+            Category::class,
+            'category_id',
+            'category_id'
+        );
+    }
+
     /**
      * Sections belonging to the course.
      */
@@ -84,4 +74,3 @@ public function category(): BelongsTo
         )->orderBy('section_order');
     }
 }
->>>>>>> origin/feature/student-course-grades
