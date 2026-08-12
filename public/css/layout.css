@@ -1,0 +1,213 @@
+/* =========================
+   GENERAL
+========================= */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #111827;
+}
+
+
+/* =========================
+   TOP HEADER
+========================= */
+
+body > .row:first-child {
+    height: 58px;
+    margin: 0;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #ffffff;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo-section {
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 18px;
+
+    background-color: #eef3ff;
+}
+
+.logo-icon {
+    color: #2563eb;
+    font-size: 13px;
+    margin-right: 7px;
+}
+
+.logo-text {
+    color: #1746d1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   MENU BUTTON
+========================= */
+
+.menu-button {
+    height: 58px;
+
+    border: none;
+    background: transparent;
+
+    color: #6b7280;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    padding-left: 10px;
+}
+
+.menu-button:hover {
+    color: #2563eb;
+}
+
+
+/* =========================
+   HEADER RIGHT
+========================= */
+
+.header-right {
+    height: 58px;
+    gap: 14px;
+    padding-right: 20px;
+}
+
+
+/* Search + Notification */
+
+.header-icon {
+    border: none;
+    background: transparent;
+
+    color: #6b7280;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.header-icon:hover {
+    color: #2563eb;
+}
+
+
+/* Profile */
+
+.profile-button {
+    width: 26px;
+    height: 26px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #1557c0;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.profile-button:hover {
+    background-color: #0f45a0;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    background-color: #eef3ff;
+
+    min-height: calc(100vh - 58px);
+}
+
+
+/* Sidebar links */
+
+.sidebar-link {
+    color: #4b5563;
+
+    padding: 11px 12px;
+
+    margin-bottom: 7px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+}
+
+.sidebar-link:hover {
+    background-color: #dce7ff;
+    color: #2563eb;
+}
+
+
+/* Active link */
+
+.sidebar-link.active {
+    background-color: #2563eb;
+    color: white;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    background-color: #ffffff;
+
+    min-height: calc(100vh - 58px);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .logo-section {
+        padding-left: 10px;
+    }
+
+    .logo-text {
+        font-size: 12px;
+    }
+
+    .sidebar {
+        min-height: auto;
+    }
+
+    .header-right {
+        padding-right: 10px;
+        gap: 8px;
+    }
+
+}
