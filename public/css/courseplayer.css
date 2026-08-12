@@ -1,0 +1,31 @@
+.video-container {
+    width: 100%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-container iframe {
+    display: block;
+}
+
+.lesson-item {
+    width: 100%;
+    border: none;
+    background: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.lesson-item:hover {
+    background: #f5f7fa;
+}
+
+.lesson-item i {
+    font-size: 22px;
+}
