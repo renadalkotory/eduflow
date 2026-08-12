@@ -11,10 +11,34 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * The database table used by the model.
+     */
     protected $table = 'users';
-    protected $primaryKey = 'user_id';
-    public $timestamps = false;
 
+    /**
+     * The primary key for the model.
+     */
+    protected $primaryKey = 'user_id';
+
+    /**
+     * The primary key is an integer.
+     */
+    protected $keyType = 'int';
+
+    /**
+     * The primary key is auto-incrementing.
+     */
+    public $incrementing = true;
+
+    /**
+     * The users table only has created_at.
+     */
+    const UPDATED_AT = null;
+
+    /**
+     * Fields that can be mass assigned.
+     */
     protected $fillable = [
         'full_name',
         'email',
@@ -24,13 +48,20 @@ class User extends Authenticatable
         'profile_image',
     ];
 
+    /**
+     * Fields hidden from arrays/JSON.
+     */
     protected $hidden = [
         'password',
     ];
 
+    /**
+     * Attribute casting.
+     */
     protected function casts(): array
     {
         return [
+            'created_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
