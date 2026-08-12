@@ -1,0 +1,272 @@
+/* ================= DASHBOARD ================= */
+
+.dashboard-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 5px;
+    color: #111827;
+}
+
+.date-badge {
+    background: #eef3ff;
+    color: #374151;
+    padding: 9px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+
+/* Statistics */
+
+.dashboard-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    padding: 18px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 100px;
+}
+
+.card-label {
+    color: #6b7280;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.card-number {
+    font-size: 24px;
+    margin: 0;
+    color: #111827;
+}
+
+.dashboard-icon {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 7px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blue-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.green-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.purple-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+
+/* Section Header */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.section-header h4,
+.section-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.section-header a {
+    color: #2563eb;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+
+/* Course Cards */
+
+.course-card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.course-image {
+    width: 100%;
+    height: 125px;
+
+    object-fit: cover;
+}
+
+.course-body {
+    padding: 14px;
+}
+
+.course-category {
+    color: #7c3aed;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.course-body h5 {
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-top: 7px;
+    margin-bottom: 14px;
+}
+
+.course-info {
+    display: flex;
+    justify-content: space-between;
+
+    color: #6b7280;
+
+    font-size: 9px;
+}
+
+.course-progress {
+    height: 4px;
+    margin-top: 8px;
+}
+
+.course-progress .progress-bar {
+    background: #34d399;
+}
+
+
+/* Explore Card */
+
+.explore-card {
+    min-height: 190px;
+
+    background: #e8edf8;
+
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-decoration: none;
+    color: #374151;
+}
+
+.search-circle {
+    width: 42px;
+    height: 42px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #2563eb;
+}
+
+
+/* Activity */
+
+.section-title {
+    margin-bottom: 18px;
+}
+
+.activity-card {
+    display: flex;
+    gap: 12px;
+
+    padding: 14px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 8px;
+
+    margin-bottom: 12px;
+}
+
+.activity-icon {
+    min-width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+}
+
+.blue-activity {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.purple-activity {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.green-activity {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.activity-card small {
+    font-size: 9px;
+    color: #9ca3af;
+}
+
+.activity-card p {
+    font-size: 11px;
+    margin: 5px 0;
+    color: #374151;
+}
+
+.activity-card a {
+    color: #715685;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+.prepare-button {
+    border: none;
+    background: #dacdf8;
+    color: white;
+
+    border-radius: 5px;
+
+    padding: 5px 10px;
+
+    font-size: 9px;
+}
+
+.assignment-badge {
+    background: #f3f4f6;
+
+    padding: 4px 7px;
+
+    border-radius: 4px;
+
+    font-size: 9px;
+}
