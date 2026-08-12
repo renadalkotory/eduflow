@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\Student\GradeController;
+use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +26,9 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])->name('cart.update');
+
+Route::get('/student/courses/{course}', [CourseController::class, 'show'])
+    ->name('student.course.details');
+
+    Route::get('/student/grades', [GradeController::class, 'index'])
+    ->name('student.grades');
