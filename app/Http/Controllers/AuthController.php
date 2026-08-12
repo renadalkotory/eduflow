@@ -55,12 +55,13 @@ class AuthController extends Controller
             'email.unique' => 'This email is already registered.',
         ]);
 
-        $user = User::create([
-            'name' => $validated['fullname'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
-        ]);
+       $user = User::create([
+    'full_name' => $validated['fullname'],
+    'email' => $validated['email'],
+    'password' => Hash::make($validated['password']),
+    'role' => $validated['role'],
+]);
+    
 
         Auth::login($user);
 
