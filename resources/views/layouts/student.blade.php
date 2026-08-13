@@ -34,7 +34,7 @@
             <!-- Logo -->
             <div class="col-md-2 p-0">
 
-                <div class="logo-section">
+                <a href="{{ route('home') }}" class="logo-section text-decoration-none">
 
                     <span class="logo-icon">
                         ▰
@@ -44,7 +44,7 @@
                         EduFlow
                     </span>
 
-                </div>
+                </a>
 
             </div>
 

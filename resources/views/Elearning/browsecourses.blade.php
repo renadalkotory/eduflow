@@ -32,8 +32,15 @@
         </li>
       </ul>
       <div class="d-flex align-items-center gap-3">
-        <a class="nav-link loginlink" href="{{ route('login') }}">Login</a>
-        <a class="btn btn-primary" href="{{ route('signup') }}">Sign Up</a>
+        @auth
+          <form method="POST" action="{{ route('logout') }}" class="mb-0">
+            @csrf
+            <button type="submit" class="btn btn-primary">Logout</button>
+          </form>
+        @else
+          <a class="nav-link loginlink" href="{{ route('login') }}">Login</a>
+          <a class="btn btn-primary" href="{{ route('signup') }}">Sign Up</a>
+        @endauth
       </div>
     </div>
   </div>
@@ -121,6 +128,20 @@
             </div>
             <span class="fw-bold fs-6">$89</span>
           </div>
+          @auth
+            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
+              @csrf
+              <input type="hidden" name="course_id" value="1">
+              <input type="hidden" name="title" value="Advanced System Architecture">
+              <input type="hidden" name="category" value="Design">
+              <input type="hidden" name="duration" value="12h 45m">
+              <input type="hidden" name="price" value="89">
+              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=500&q=80">
+              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+            </form>
+          @else
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
+          @endauth
         </div>
       </div>
     </div>
@@ -146,6 +167,20 @@
             </div>
             <span class="fw-bold fs-6">$120</span>
           </div>
+          @auth
+            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
+              @csrf
+              <input type="hidden" name="course_id" value="2">
+              <input type="hidden" name="title" value="Applied Machine Learning">
+              <input type="hidden" name="category" value="Data Science">
+              <input type="hidden" name="duration" value="24h 10m">
+              <input type="hidden" name="price" value="120">
+              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80">
+              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+            </form>
+          @else
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
+          @endauth
         </div>
       </div>
     </div>
@@ -171,6 +206,20 @@
             </div>
             <span class="fw-bold fs-6">$49</span>
           </div>
+          @auth
+            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
+              @csrf
+              <input type="hidden" name="course_id" value="3">
+              <input type="hidden" name="title" value="Modern Frontend Workflows">
+              <input type="hidden" name="category" value="Development">
+              <input type="hidden" name="duration" value="8h 30m">
+              <input type="hidden" name="price" value="49">
+              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80">
+              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+            </form>
+          @else
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
+          @endauth
         </div>
       </div>
     </div>
@@ -196,6 +245,20 @@
             </div>
             <span class="fw-bold fs-6">$150</span>
           </div>
+          @auth
+            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
+              @csrf
+              <input type="hidden" name="course_id" value="4">
+              <input type="hidden" name="title" value="Strategic Leadership in Tech">
+              <input type="hidden" name="category" value="Business">
+              <input type="hidden" name="duration" value="15h 00m">
+              <input type="hidden" name="price" value="150">
+              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&q=80">
+              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
+            </form>
+          @else
+            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
+          @endauth
         </div>
       </div>
     </div>

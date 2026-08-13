@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,10 +35,19 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Pricing</a>
         </li>
+        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+</li>
       </ul>
       <div class="d-flex align-items-center gap-3">
-       <a class="nav-link loginlink" href="{{ route('login') }}">Login</a>
-        <a class="btn btn-primary" href="{{ route('signup') }}">Sign Up</a>
+       @auth
+         <form method="POST" action="{{ route('logout') }}" class="mb-0">
+           @csrf
+           <button type="submit" class="btn btn-primary">Logout</button>
+         </form>
+       @else
+         <a class="nav-link loginlink" href="{{ route('login') }}">Login</a>
+         <a class="btn btn-primary" href="{{ route('signup') }}">Sign Up</a>
+       @endauth
       </div>
     </div>
   </div>

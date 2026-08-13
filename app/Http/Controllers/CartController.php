@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -18,6 +19,21 @@ class CartController extends Controller
         $total = round($subtotal + $tax, 2);
 
         return view('Elearning.checkout', compact('cart', 'subtotal', 'tax', 'total'));
+    }
+
+    public function checkout(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()
+                ->route('cart')
+                ->with('error', 'Please log in first to complete your purchase.');
+        }
+
+        session()->forget('cart');
+
+        return redirect()
+            ->route('student.dashboard')
+            ->with('success', 'Successfully bought!');
     }
 
     public function add(Request $request)

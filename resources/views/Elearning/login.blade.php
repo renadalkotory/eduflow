@@ -31,6 +31,8 @@
         </div>
 <form method="POST" action="{{ route('login.submit') }}">
             @csrf
+
+   
             @if ($errors->any())
                 <div class="alert alert-danger py-2 small mb-3">
                     {{ $errors->first() }}

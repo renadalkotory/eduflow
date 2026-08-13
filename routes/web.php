@@ -43,7 +43,11 @@ Route::get('/browse-courses', function () {
 Route::get('/cart', [CartController::class, 'index'])
     ->name('cart');
 
+Route::post('/cart/checkout', [CartController::class, 'checkout'])
+    ->name('cart.checkout');
+
 Route::post('/cart/add', [CartController::class, 'add'])
+    ->middleware('auth')
     ->name('cart.add');
 
 Route::get('/instructor/profile', [InstructorController::class, 'profile'])->name('instructor.profile');
@@ -61,7 +65,21 @@ Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])
 Route::get('/instructor/dashboard', [InstructorController::class, 'dashboard'])
     ->name('instructor.dashboard');
 
+//
+Route::get('/dashboard', function () {
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
 
+    return match (auth()->user()->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'instructor' => redirect()->route('instructor.dashboard'),
+        'student' => redirect()->route('student.dashboard'),
+        default => redirect('/'),
+    };
+})->name('dashboard');
+
+//
 // =========================
 // Student Routes
 // =========================
