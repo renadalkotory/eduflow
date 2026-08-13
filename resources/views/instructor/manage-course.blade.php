@@ -26,38 +26,39 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg bg-white border-bottom">
-
-    <div class="container">
-
-        <a class="navbar-brand fw-bold text-primary" href="#">
-            <i class="bi bi-mortarboard-fill"></i>
-            EduFlow
+<nav class="navbar">
+    <div class="logo">
+        EduFlow
+    </div>
+    <div class="nav-links">
+        <a href="{{ route('instructor.dashboard') }}">
+            <i class="bi bi-arrow-left"></i> Dashboard
         </a>
 
-        <div class="d-flex align-items-center gap-4">
+        <a class="{{ request()->routeIs('instructor.createCourse') ? 'active' : '' }}"
+        href="{{ route('instructor.createCourse') }}">
+            Create Course
+        </a>
 
-            <a href="#" class="nav-link active">
-                Browse Courses
-            </a>
+        <a class="{{ request()->routeIs('instructor.manageCourse') ? 'active' : '' }}"
+        href="{{ route('instructor.manageCourse') }}">
+            Manage Course
+        </a>
 
-            <a href="#" class="nav-link">
-                Categories
-            </a>
+        <a class="{{ request()->routeIs('instructor.createQuiz') ? 'active' : '' }}"
+        href="{{ route('instructor.createQuiz') }}">
+            Create Quiz
+        </a>
 
-            <a href="#" class="nav-link">
-                Pricing
-            </a>
+        <a class="{{ request()->routeIs('instructor.gradeTests') ? 'active' : '' }}"
+        href="{{ route('instructor.gradeTests') }}">
+            Grade Tests
+        </a>
 
-            <a href="#" class="nav-link text-primary">
-                Login
-            </a>
-
-            <button class="btn btn-primary px-4">
-                Sign Up
-            </button>
-
-        </div>
+        <a class="{{ request()->routeIs('instructor.profile') ? 'active' : '' }}"
+        href="{{ route('instructor.profile') }}">
+            Profile
+        </a>
 
     </div>
 

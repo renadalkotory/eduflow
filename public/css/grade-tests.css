@@ -115,3 +115,38 @@ body {
     }
 
 }
+
+/* Navbar (shared across instructor pages) */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 16px 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.navbar .logo {
+    font-weight: 700;
+    font-size: 20px;
+    color: #6c63ff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    padding: 6px 4px;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+    color: #6c63ff;
+    border-bottom: 2px solid #6c63ff;
+}

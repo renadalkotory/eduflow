@@ -26,6 +26,44 @@
 
 <body>
 
+<nav class="navbar">
+    <div class="logo">
+        EduFlow
+    </div>
+    <div class="nav-links">
+        <a href="{{ route('instructor.dashboard') }}">
+            <i class="bi bi-arrow-left"></i> Dashboard
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.createCourse') ? 'active' : '' }}"
+        href="{{ route('instructor.createCourse') }}">
+            Create Course
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.manageCourse') ? 'active' : '' }}"
+        href="{{ route('instructor.manageCourse') }}">
+            Manage Course
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.createQuiz') ? 'active' : '' }}"
+        href="{{ route('instructor.createQuiz') }}">
+            Create Quiz
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.gradeTests') ? 'active' : '' }}"
+        href="{{ route('instructor.gradeTests') }}">
+            Grade Tests
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.profile') ? 'active' : '' }}"
+        href="{{ route('instructor.profile') }}">
+            Profile
+        </a>
+
+    </div>
+
+</nav>
+
 <div class="container py-5">
 
     <div class="mb-4">

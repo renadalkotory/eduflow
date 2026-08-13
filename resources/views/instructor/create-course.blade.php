@@ -37,21 +37,33 @@
         EduFlow
     </div>
     <div class="nav-links">
-        <a class="active"
+        <a href="{{ route('instructor.dashboard') }}">
+            <i class="bi bi-arrow-left"></i> Dashboard
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.createCourse') ? 'active' : '' }}"
         href="{{ route('instructor.createCourse') }}">
             Create Course
         </a>
 
-        <a href="{{ route('instructor.manageCourse') }}">
+        <a class="{{ request()->routeIs('instructor.manageCourse') ? 'active' : '' }}"
+        href="{{ route('instructor.manageCourse') }}">
             Manage Course
         </a>
 
-        <a href="{{ route('instructor.createQuiz') }}">
+        <a class="{{ request()->routeIs('instructor.createQuiz') ? 'active' : '' }}"
+        href="{{ route('instructor.createQuiz') }}">
             Create Quiz
         </a>
 
-        <a href="{{ route('instructor.gradeTests') }}">
+        <a class="{{ request()->routeIs('instructor.gradeTests') ? 'active' : '' }}"
+        href="{{ route('instructor.gradeTests') }}">
             Grade Tests
+        </a>
+
+        <a class="{{ request()->routeIs('instructor.profile') ? 'active' : '' }}"
+        href="{{ route('instructor.profile') }}">
+            Profile
         </a>
 
     </div>
