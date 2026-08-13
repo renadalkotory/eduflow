@@ -28,7 +28,6 @@
           <a class="nav-link" href="{{ route('home') }}#categories">Categories</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
         </li>
       </ul>
       <div class="d-flex align-items-center gap-3">

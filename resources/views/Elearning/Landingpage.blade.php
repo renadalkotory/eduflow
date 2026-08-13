@@ -33,7 +33,7 @@
           <a class="nav-link" href="#">Categories</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
+
         </li>
         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
 </li>

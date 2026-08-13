@@ -23,7 +23,6 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="{{ route('browse.courses') }}">Browse Courses</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#categories">Categories</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
       </ul>
       <div class="d-flex align-items-center gap-3">
         <a class="nav-link cart-link position-relative" href="{{ route('cart') }}">
