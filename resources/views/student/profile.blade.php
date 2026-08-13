@@ -147,6 +147,7 @@
                         method="POST">
 
                         @csrf
+                        @method('PUT')
 
                         <div class="row">
 
