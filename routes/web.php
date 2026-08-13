@@ -37,7 +37,8 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::get('/browse-courses', function () {
-    return view('Elearning.browsecourses');
+    $courses = \App\Models\Course::where('status', 'Published')->get();
+    return view('Elearning.browsecourses', compact('courses'));
 })->name('browse.courses');
 
 Route::get('/cart', [CartController::class, 'index'])

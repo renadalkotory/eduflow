@@ -106,36 +106,29 @@
 <section class="container mb-5">
   <div class="row g-4">
 
+    @forelse ($courses as $course)
     <div class="col-md-6 col-lg-3">
       <div class="course-card h-100">
         <div class="course-img-wrap">
-          <span class="course-tag">DESIGN</span>
-          <img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=500&q=80" alt="Advanced System Architecture">
+          <span class="course-tag">{{ $course->category->name ?? 'General' }}</span>
+          <img src="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80' }}" alt="{{ $course->title }}">
         </div>
         <div class="course-body">
-          <div class="d-flex align-items-center gap-1 mb-2 small text-muted">
-            <i class="bi bi-clock"></i> 12h 45m
-            <span class="mx-1">·</span>
-            <i class="bi bi-star-fill text-warning"></i> <span class="fw-semibold text-dark">4.8</span> (1.2k)
-          </div>
-          <h6 class="fw-bold mb-1">Advanced System Architecture...</h6>
-          <p class="text-muted small mb-3">Master the principles of scalable and resilient syste...</p>
+          <p class="text-muted small mb-2">Course #{{ $course->course_id }}</p>
+          <h6 class="fw-bold mb-1">{{ $course->title }}</h6>
+          <p class="text-muted small mb-3">{{ Str::limit($course->description, 70) }}</p>
           <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-              <img src="https://randomuser.me/api/portraits/women/44.jpg" class="instructor-avatar" alt="Dr. A. Chen">
-              <span class="small fw-semibold">Dr. A. Chen</span>
-            </div>
-            <span class="fw-bold fs-6">$89</span>
+            <span class="fw-bold fs-6">{{ $course->price > 0 ? '$' . number_format($course->price, 2) : 'Free' }}</span>
           </div>
           @auth
             <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
               @csrf
-              <input type="hidden" name="course_id" value="1">
-              <input type="hidden" name="title" value="Advanced System Architecture">
-              <input type="hidden" name="category" value="Design">
-              <input type="hidden" name="duration" value="12h 45m">
-              <input type="hidden" name="price" value="89">
-              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=500&q=80">
+              <input type="hidden" name="course_id" value="{{ $course->course_id }}">
+              <input type="hidden" name="title" value="{{ $course->title }}">
+              <input type="hidden" name="category" value="{{ $course->category->name ?? 'General' }}">
+              <input type="hidden" name="duration" value="N/A">
+              <input type="hidden" name="price" value="{{ $course->price }}">
+              <input type="hidden" name="image" value="{{ $course->thumbnail ?? '' }}">
               <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
             </form>
           @else
@@ -144,123 +137,9 @@
         </div>
       </div>
     </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="course-card h-100">
-        <div class="course-img-wrap">
-          <span class="course-tag">DATA SCIENCE</span>
-          <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80" alt="Applied Machine Learning">
-        </div>
-        <div class="course-body">
-          <div class="d-flex align-items-center gap-1 mb-2 small text-muted">
-            <i class="bi bi-clock"></i> 24h 10m
-            <span class="mx-1">·</span>
-            <i class="bi bi-star-fill text-warning"></i> <span class="fw-semibold text-dark">4.9</span> (3.4k)
-          </div>
-          <h6 class="fw-bold mb-1">Applied Machine Learning...</h6>
-          <p class="text-muted small mb-3">Build and deploy your first predictive models using...</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="instructor-avatar" alt="M. Silva">
-              <span class="small fw-semibold">M. Silva</span>
-            </div>
-            <span class="fw-bold fs-6">$120</span>
-          </div>
-          @auth
-            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
-              @csrf
-              <input type="hidden" name="course_id" value="2">
-              <input type="hidden" name="title" value="Applied Machine Learning">
-              <input type="hidden" name="category" value="Data Science">
-              <input type="hidden" name="duration" value="24h 10m">
-              <input type="hidden" name="price" value="120">
-              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80">
-              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
-            </form>
-          @else
-            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
-          @endauth
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="course-card h-100">
-        <div class="course-img-wrap">
-          <span class="course-tag">DEVELOPMENT</span>
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80" alt="Modern Frontend Workflows">
-        </div>
-        <div class="course-body">
-          <div class="d-flex align-items-center gap-1 mb-2 small text-muted">
-            <i class="bi bi-clock"></i> 8h 30m
-            <span class="mx-1">·</span>
-            <i class="bi bi-star-fill text-warning"></i> <span class="fw-semibold text-dark">4.6</span> (850)
-          </div>
-          <h6 class="fw-bold mb-1">Modern Frontend Workflows</h6>
-          <p class="text-muted small mb-3">Optimize your development process with modern toolin...</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-              <span class="instructor-avatar-fallback">J</span>
-              <span class="small fw-semibold">J. Davis</span>
-            </div>
-            <span class="fw-bold fs-6">$49</span>
-          </div>
-          @auth
-            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
-              @csrf
-              <input type="hidden" name="course_id" value="3">
-              <input type="hidden" name="title" value="Modern Frontend Workflows">
-              <input type="hidden" name="category" value="Development">
-              <input type="hidden" name="duration" value="8h 30m">
-              <input type="hidden" name="price" value="49">
-              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80">
-              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
-            </form>
-          @else
-            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
-          @endauth
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="course-card h-100">
-        <div class="course-img-wrap">
-          <span class="course-tag">BUSINESS</span>
-          <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&q=80" alt="Strategic Leadership in Tech">
-        </div>
-        <div class="course-body">
-          <div class="d-flex align-items-center gap-1 mb-2 small text-muted">
-            <i class="bi bi-clock"></i> 15h 00m
-            <span class="mx-1">·</span>
-            <i class="bi bi-star-fill text-warning"></i> <span class="fw-semibold text-dark">4.7</span> (2.1k)
-          </div>
-          <h6 class="fw-bold mb-1">Strategic Leadership in Tech</h6>
-          <p class="text-muted small mb-3">Develop the frameworks needed to lead engineering...</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-2">
-              <img src="https://randomuser.me/api/portraits/women/68.jpg" class="instructor-avatar" alt="S. Williams">
-              <span class="small fw-semibold">S. Williams</span>
-            </div>
-            <span class="fw-bold fs-6">$150</span>
-          </div>
-          @auth
-            <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
-              @csrf
-              <input type="hidden" name="course_id" value="4">
-              <input type="hidden" name="title" value="Strategic Leadership in Tech">
-              <input type="hidden" name="category" value="Business">
-              <input type="hidden" name="duration" value="15h 00m">
-              <input type="hidden" name="price" value="150">
-              <input type="hidden" name="image" value="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&q=80">
-              <button type="submit" class="btn btn-primary btn-sm w-100">Add to Cart</button>
-            </form>
-          @else
-            <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-sm w-100 mt-3">Login to Add to Cart</a>
-          @endauth
-        </div>
-      </div>
-    </div>
+    @empty
+      <p class="text-muted">No courses available yet.</p>
+    @endforelse
 
   </div>
 </section>

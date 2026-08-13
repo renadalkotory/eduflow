@@ -4,12 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Enrollment;
 
 class CartController extends Controller
 {
+    /**
+     * Each logged-in student gets their own cart, keyed by their user id.
+     * Guests fall back to a shared 'cart_guest' key (harmless, since guests
+     * can't actually reach add/checkout without logging in first).
+     */
+    private function cartKey()
+    {
+        return Auth::check() ? 'cart_' . Auth::id() : 'cart_guest';
+    }
+
     public function index()
     {
-        $cart = session('cart', []);
+        $cart = session($this->cartKey(), []);
 
         $subtotal = collect($cart)->sum(function ($item) {
             return $item['price'] * $item['qty'];
@@ -29,7 +40,22 @@ class CartController extends Controller
                 ->with('error', 'Please log in first to complete your purchase.');
         }
 
-        session()->forget('cart');
+        $cart = session($this->cartKey(), []);
+
+        foreach ($cart as $courseId => $item) {
+            Enrollment::firstOrCreate(
+                [
+                    'student_id' => Auth::id(),
+                    'course_id' => $courseId,
+                ],
+                [
+                    'enrolled_at' => now(),
+                    'payment_status' => 'paid',
+                ]
+            );
+        }
+
+        session()->forget($this->cartKey());
 
         return redirect()
             ->route('student.dashboard')
@@ -47,7 +73,7 @@ class CartController extends Controller
             'image' => 'nullable|string',
         ]);
 
-        $cart = session('cart', []);
+        $cart = session($this->cartKey(), []);
 
         if (isset($cart[$validated['course_id']])) {
             $cart[$validated['course_id']]['qty']++;
@@ -62,28 +88,28 @@ class CartController extends Controller
             ];
         }
 
-        session(['cart' => $cart]);
+        session([$this->cartKey() => $cart]);
 
         return redirect()->route('cart')->with('success', 'Course added to cart!');
     }
 
     public function remove($course_id)
     {
-        $cart = session('cart', []);
+        $cart = session($this->cartKey(), []);
         unset($cart[$course_id]);
-        session(['cart' => $cart]);
+        session([$this->cartKey() => $cart]);
 
         return redirect()->route('cart');
     }
 
     public function updateQty(Request $request, $course_id)
     {
-        $cart = session('cart', []);
+        $cart = session($this->cartKey(), []);
 
         if (isset($cart[$course_id])) {
             $qty = max(1, (int) $request->input('qty', 1));
             $cart[$course_id]['qty'] = $qty;
-            session(['cart' => $cart]);
+            session([$this->cartKey() => $cart]);
         }
 
         return redirect()->route('cart');
