@@ -30,8 +30,8 @@
           <a class="nav-link" href="{{ route('browse.courses') }}">Browse Courses</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Categories</a>
-        </li>
+  <a class="nav-link" href="{{ route('browse.courses') }}">Categories</a>
+</li>
         <li class="nav-item">
 
         </li>
@@ -72,7 +72,7 @@
           from anywhere in the world.
         </p>
         <div class="d-flex gap-3 mb-4">
-          <a href="#" class="btn btn-primary btn-lg px-4">Get Started <i class="bi bi-arrow-right ms-1"></i></a>
+          <a href="{{ auth()->check() ? route('dashboard') : route('login') }}" class="btn btn-primary btn-lg px-4">Get Started <i class="bi bi-arrow-right ms-1"></i></a>
           <a href="#" class="btn btn-light btn-lg px-4 border">Watch Demo</a>
         </div>
       </div>
