@@ -11,132 +11,200 @@ class StudentController extends Controller
     // =========================
     // Dashboard
     // =========================
-public function dashboard()
-{
-    $studentId = Auth::id();
+    public function dashboard()
+    {
+        $studentId = Auth::id();
 
-    // Get logged-in student
-    $student = DB::table('users')
-        ->where('user_id', $studentId)
-        ->first();
+        // Get logged-in student
+        $student = DB::table('users')
+            ->where('user_id', $studentId)
+            ->first();
 
-    // Get student's enrolled courses
-    $courses = DB::table('enrollments')
-        ->join(
-            'courses',
-            'enrollments.course_id',
-            '=',
-            'courses.course_id'
-        )
-        ->where('enrollments.student_id', $studentId)
-        ->select(
-            'courses.course_id',
-            'courses.title',
-            'courses.description',
-            'courses.thumbnail'
-        )
-        ->get();
+        if (!$student) {
+            abort(404, 'Student not found.');
+        }
 
-    // Calculate progress for each course
-    foreach ($courses as $course) {
-
-        // Total lessons
-        $totalLessons = DB::table('lessons')
+        // Get student's enrolled courses
+        $courses = DB::table('enrollments')
             ->join(
-                'sections',
-                'lessons.section_id',
+                'courses',
+                'enrollments.course_id',
                 '=',
-                'sections.section_id'
+                'courses.course_id'
             )
-            ->where('sections.course_id', $course->course_id)
+            ->where('enrollments.student_id', $studentId)
+            ->select(
+                'courses.course_id',
+                'courses.title',
+                'courses.description',
+                'courses.thumbnail'
+            )
+            ->get();
+
+        // Calculate progress for each course
+        foreach ($courses as $course) {
+
+            // Total lessons
+            $totalLessons = DB::table('lessons')
+                ->join(
+                    'sections',
+                    'lessons.section_id',
+                    '=',
+                    'sections.section_id'
+                )
+                ->where(
+                    'sections.course_id',
+                    $course->course_id
+                )
+                ->count();
+
+            // Completed lessons by this student
+            $completedLessons = DB::table('course_progress')
+                ->join(
+                    'lessons',
+                    'course_progress.lesson_id',
+                    '=',
+                    'lessons.lesson_id'
+                )
+                ->join(
+                    'sections',
+                    'lessons.section_id',
+                    '=',
+                    'sections.section_id'
+                )
+                ->where(
+                    'sections.course_id',
+                    $course->course_id
+                )
+                ->where(
+                    'course_progress.student_id',
+                    $studentId
+                )
+                ->where(
+                    'course_progress.completed',
+                    1
+                )
+                ->count();
+
+            $course->totalLessons = $totalLessons;
+            $course->completedLessons = $completedLessons;
+
+            // Progress percentage
+            $course->progress = $totalLessons > 0
+                ? round(($completedLessons / $totalLessons) * 100)
+                : 0;
+
+            // Status
+            $course->status = (
+                $totalLessons > 0 &&
+                $completedLessons == $totalLessons
+            )
+                ? 'completed'
+                : 'in_progress';
+        }
+
+        // =========================
+        // Course Statistics
+        // =========================
+
+        $coursesInProgress = $courses
+            ->where('status', 'in_progress')
             ->count();
 
-        // Completed lessons by this student
-        $completedLessons = DB::table('course_progress')
-            ->join(
-                'lessons',
-                'course_progress.lesson_id',
-                '=',
-                'lessons.lesson_id'
-            )
-            ->join(
-                'sections',
-                'lessons.section_id',
-                '=',
-                'sections.section_id'
-            )
-            ->where('sections.course_id', $course->course_id)
-            ->where('course_progress.student_id', $studentId)
-            ->where('course_progress.completed', 1)
+        $completedCourses = $courses
+            ->where('status', 'completed')
             ->count();
 
-        $course->totalLessons = $totalLessons;
-        $course->completedLessons = $completedLessons;
 
-        // Progress percentage
-        $course->progress = $totalLessons > 0
-            ? round(($completedLessons / $totalLessons) * 100)
+        // =========================
+        // Quiz Statistics
+        // =========================
+
+        $quizAttempts = DB::table('quiz_attempts')
+            ->join(
+                'quizzes',
+                'quiz_attempts.quiz_id',
+                '=',
+                'quizzes.quiz_id'
+            )
+            ->where(
+                'quiz_attempts.student_id',
+                $studentId
+            )
+            ->select(
+                'quiz_attempts.attempt_id',
+                'quiz_attempts.quiz_id',
+                'quiz_attempts.score',
+                'quiz_attempts.attempt_date',
+                'quizzes.title'
+            )
+            ->orderBy(
+                'quiz_attempts.attempt_date',
+                'desc'
+            )
+            ->get();
+
+
+        // Calculate percentage for each quiz attempt
+        foreach ($quizAttempts as $attempt) {
+
+            $totalQuestions = DB::table('questions')
+                ->where(
+                    'quiz_id',
+                    $attempt->quiz_id
+                )
+                ->count();
+
+            $attempt->total_questions = $totalQuestions;
+
+            $attempt->percentage = $totalQuestions > 0
+                ? round(
+                    ($attempt->score / $totalQuestions) * 100,
+                    2
+                )
+                : 0;
+        }
+
+
+        // Average quiz grade
+        $averageGrade = $quizAttempts->count() > 0
+            ? round(
+                $quizAttempts->avg('percentage'),
+                2
+            )
             : 0;
 
-        // Status
-        $course->status = ($totalLessons > 0 && $completedLessons == $totalLessons)
-            ? 'completed'
-            : 'in_progress';
+
+        // Most recent quiz
+        $recentQuiz = $quizAttempts->first();
+
+
+        // =========================
+        // RETURN DASHBOARD VIEW
+        // =========================
+
+        return view(
+            'student.dashboard',
+            compact(
+                'student',
+                'courses',
+                'coursesInProgress',
+                'completedCourses',
+                'averageGrade',
+                'recentQuiz'
+            )
+        );
     }
 
-    // Statistics
-    $coursesInProgress = $courses
-        ->where('status', 'in_progress')
-        ->count();
-
-    $completedCourses = $courses
-        ->where('status', 'completed')
-        ->count();
-
-    // Average quiz grade
-    $averageGrade = DB::table('quiz_results')
-        ->where('student_id', $studentId)
-        ->avg('percentage');
-
-    $averageGrade = $averageGrade
-        ? round($averageGrade, 2)
-        : 0;
-
-    // Most recent quiz
-    $recentQuiz = DB::table('quiz_results')
-        ->join(
-            'quizzes',
-            'quiz_results.quiz_id',
-            '=',
-            'quizzes.quiz_id'
-        )
-        ->where('quiz_results.student_id', $studentId)
-        ->select(
-            'quiz_results.created_at',
-            'quiz_results.percentage',
-            'quizzes.title'
-        )
-        ->orderBy('quiz_results.created_at', 'desc')
-        ->first();
-
-    return view('student.dashboard', compact(
-        'student',
-        'courses',
-        'coursesInProgress',
-        'completedCourses',
-        'averageGrade',
-        'recentQuiz'
-    ));
-}
 
     // =========================
     // Profile
     // =========================
-     public function profile()
+    public function profile()
     {
         $studentId = Auth::id();
 
-         $student = DB::table('users')
+        $student = DB::table('users')
             ->where('user_id', $studentId)
             ->first();
 
@@ -144,7 +212,10 @@ public function dashboard()
             abort(404);
         }
 
-        return view('student.profile', compact('student'));
+        return view(
+            'student.profile',
+            compact('student')
+        );
     }
 
 
@@ -162,7 +233,10 @@ public function dashboard()
                 '=',
                 'courses.course_id'
             )
-            ->where('enrollments.student_id', $studentId)
+            ->where(
+                'enrollments.student_id',
+                $studentId
+            )
             ->select(
                 'courses.course_id',
                 'courses.title',
@@ -182,7 +256,10 @@ public function dashboard()
                     '=',
                     'sections.section_id'
                 )
-                ->where('sections.course_id', $course->course_id)
+                ->where(
+                    'sections.course_id',
+                    $course->course_id
+                )
                 ->count();
 
             // Completed lessons
@@ -199,7 +276,10 @@ public function dashboard()
                     '=',
                     'sections.section_id'
                 )
-                ->where('sections.course_id', $course->course_id)
+                ->where(
+                    'sections.course_id',
+                    $course->course_id
+                )
                 ->where(
                     'course_progress.student_id',
                     $studentId
@@ -214,23 +294,19 @@ public function dashboard()
             $course->completedLessons = $completedLessons;
 
             // Progress
-            if ($totalLessons > 0) {
-                $course->progress = round(
+            $course->progress = $totalLessons > 0
+                ? round(
                     ($completedLessons / $totalLessons) * 100
-                );
-            } else {
-                $course->progress = 0;
-            }
+                )
+                : 0;
 
             // Status
-            if (
+            $course->status = (
                 $totalLessons > 0 &&
                 $completedLessons == $totalLessons
-            ) {
-                $course->status = 'completed';
-            } else {
-                $course->status = 'in_progress';
-            }
+            )
+                ? 'completed'
+                : 'in_progress';
         }
 
         return view(
@@ -249,17 +325,29 @@ public function dashboard()
 
         // Check if student is enrolled
         $enrolled = DB::table('enrollments')
-            ->where('student_id', $studentId)
-            ->where('course_id', $course_id)
+            ->where(
+                'student_id',
+                $studentId
+            )
+            ->where(
+                'course_id',
+                $course_id
+            )
             ->exists();
 
         if (!$enrolled) {
-            abort(403, 'You are not enrolled in this course.');
+            abort(
+                403,
+                'You are not enrolled in this course.'
+            );
         }
 
         // Get course
         $course = DB::table('courses')
-            ->where('course_id', $course_id)
+            ->where(
+                'course_id',
+                $course_id
+            )
             ->first();
 
         if (!$course) {
@@ -268,7 +356,10 @@ public function dashboard()
 
         // Get sections
         $sections = DB::table('sections')
-            ->where('course_id', $course_id)
+            ->where(
+                'course_id',
+                $course_id
+            )
             ->orderBy('section_id')
             ->get();
 
@@ -305,7 +396,10 @@ public function dashboard()
 
         return view(
             'student.courseplayer',
-            compact('course', 'sections')
+            compact(
+                'course',
+                'sections'
+            )
         );
     }
 
@@ -332,7 +426,10 @@ public function dashboard()
     public function quiz($quiz_id)
     {
         $quiz = DB::table('quizzes')
-            ->where('quiz_id', $quiz_id)
+            ->where(
+                'quiz_id',
+                $quiz_id
+            )
             ->first();
 
         if (!$quiz) {
@@ -340,7 +437,10 @@ public function dashboard()
         }
 
         $questions = DB::table('questions')
-            ->where('quiz_id', $quiz_id)
+            ->where(
+                'quiz_id',
+                $quiz_id
+            )
             ->get();
 
         foreach ($questions as $question) {
@@ -355,7 +455,10 @@ public function dashboard()
 
         return view(
             'student.quiz',
-            compact('quiz', 'questions')
+            compact(
+                'quiz',
+                'questions'
+            )
         );
     }
 
@@ -375,7 +478,10 @@ public function dashboard()
         );
 
         $questions = DB::table('questions')
-            ->where('quiz_id', $quiz_id)
+            ->where(
+                'quiz_id',
+                $quiz_id
+            )
             ->get();
 
         $score = 0;
@@ -409,23 +515,12 @@ public function dashboard()
             }
         }
 
-        $totalQuestions = $questions->count();
-
-        $percentage = $totalQuestions > 0
-            ? round(
-                ($score / $totalQuestions) * 100,
-                2
-            )
-            : 0;
-
-        // Save result
-        DB::table('quiz_results')->insert([
+        // Save quiz attempt
+        DB::table('quiz_attempts')->insert([
             'student_id' => $studentId,
             'quiz_id' => $quiz_id,
             'score' => $score,
-            'total_questions' => $totalQuestions,
-            'percentage' => $percentage,
-            'created_at' => now(),
+            'attempt_date' => now(),
         ]);
 
         return redirect()
@@ -444,33 +539,84 @@ public function dashboard()
     {
         $studentId = Auth::id();
 
+        $grades = DB::table('quiz_attempts')
+            ->join(
+                'quizzes',
+                'quiz_attempts.quiz_id',
+                '=',
+                'quizzes.quiz_id'
+            )
+            ->where(
+                'quiz_attempts.student_id',
+                $studentId
+            )
+            ->select(
+                'quiz_attempts.attempt_id',
+                'quiz_attempts.quiz_id',
+                'quizzes.title',
+                'quiz_attempts.score',
+                'quiz_attempts.attempt_date'
+            )
+            ->orderBy(
+                'quiz_attempts.attempt_date',
+                'desc'
+            )
+            ->get();
+
+
+        // Calculate total questions and percentage
+        foreach ($grades as $grade) {
+
+            $totalQuestions = DB::table('questions')
+                ->where(
+                    'quiz_id',
+                    $grade->quiz_id
+                )
+                ->count();
+
+            $grade->total_questions = $totalQuestions;
+
+            $grade->percentage = $totalQuestions > 0
+                ? round(
+                    ($grade->score / $totalQuestions) * 100,
+                    2
+                )
+                : 0;
+        }
+
+
         return view(
             'student.grades',
             compact('grades')
         );
     }
-    // =========================
-    // update profile
-    // =========================
-public function updateProfile(Request $request)
-{
-    $studentId = Auth::id();
 
-    $request->validate([
-        'phone' => 'nullable|string|max:20',
-    ]);
 
-    DB::table('users')
-        ->where('user_id', $studentId)
-        ->update([
-            'phone' => $request->phone,
+    // =========================
+    // Update Profile
+    // =========================
+    public function updateProfile(Request $request)
+    {
+        $studentId = Auth::id();
+
+        $request->validate([
+            'phone' => 'nullable|string|max:20',
         ]);
 
-    return redirect()
-        ->route('student.profile')
-        ->with('success', 'Phone number updated successfully!');
-}
+        DB::table('users')
+            ->where(
+                'user_id',
+                $studentId
+            )
+            ->update([
+                'phone' => $request->phone,
+            ]);
 
-
-
+        return redirect()
+            ->route('student.profile')
+            ->with(
+                'success',
+                'Phone number updated successfully!'
+            );
+    }
 }

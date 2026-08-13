@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\Student\GradeController;
-use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\UserController;
@@ -25,29 +24,73 @@ Route::get('/login', function () {
     return view('Elearning.login');
 })->name('login');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.submit');
 
-Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
-Route::post('/signup', [AuthController::class, 'signup'])->name('signup.submit');
+Route::get('/signup', [AuthController::class, 'showSignup'])
+    ->name('signup');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/signup', [AuthController::class, 'signup'])
+    ->name('signup.submit');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
 Route::get('/browse-courses', function () {
     return view('Elearning.browsecourses');
 })->name('browse.courses');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])->name('cart.update');
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart');
 
-Route::get('/instructor/dashboard', [InstructorController::class, 'dashboard'])->name('instructor.dashboard');
+Route::post('/cart/add', [CartController::class, 'add'])
+    ->name('cart.add');
 
-Route::get('/student/courses/{course}', [CourseController::class, 'show'])
-    ->name('student.course.details');
+Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])
+    ->name('cart.remove');
 
-Route::get('/student/grades', [GradeController::class, 'index'])
+Route::patch('/cart/update/{course_id}', [CartController::class, 'updateQty'])
+    ->name('cart.update');
+
+Route::get('/instructor/dashboard', [InstructorController::class, 'dashboard'])
+    ->name('instructor.dashboard');
+
+
+// =========================
+// Student Routes
+// =========================
+
+Route::get('/student/dashboard', [StudentController::class, 'dashboard'])
+    ->name('student.dashboard');
+
+Route::get('/student/profile', [StudentController::class, 'profile'])
+    ->name('student.profile');
+
+Route::put('/student/profile', [StudentController::class, 'updateProfile'])
+    ->name('student.profile.update');
+
+Route::get('/student/courses', [StudentController::class, 'courses'])
+    ->name('student.courses');
+
+Route::get('/student/courseplayer/{course_id}', [StudentController::class, 'coursePlayer'])
+    ->name('student.courseplayer');
+
+Route::get('/student/quizzes', [StudentController::class, 'quizzes'])
+    ->name('student.quizzes');
+
+Route::get('/student/quiz/{quiz_id}', [StudentController::class, 'quiz'])
+    ->name('student.quiz');
+
+Route::post('/student/quiz/{quiz_id}/submit', [StudentController::class, 'submitQuiz'])
+    ->name('student.quiz.submit');
+
+Route::get('/student/grades', [StudentController::class, 'grades'])
     ->name('student.grades');
+
+
+// =========================
+// Admin Routes
+// =========================
 
 Route::middleware(['auth', 'admin'])->group(function () {
 

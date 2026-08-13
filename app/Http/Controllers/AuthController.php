@@ -41,7 +41,13 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
-        return redirect()->intended('/');
+
+        return match($user->role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'instructor' => redirect()->route('instructor.dashboard'),
+            'student' => redirect()->route('student.dashboard'),
+            default => redirect('/'),
+        };
     }
 
     public function signup(Request $request)
@@ -55,24 +61,30 @@ class AuthController extends Controller
             'email.unique' => 'This email is already registered.',
         ]);
 
-       $user = User::create([
-    'full_name' => $validated['fullname'],
-    'email' => $validated['email'],
-    'password' => Hash::make($validated['password']),
-    'role' => $validated['role'],
-]);
-    
+        $user = User::create([
+            'full_name' => $validated['fullname'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
+        ]);
 
         Auth::login($user);
 
-        return redirect('/');
+        return match($user->role) {
+            'admin' => redirect()->route('admin.dashboard'),
+            'instructor' => redirect()->route('instructor.dashboard'),
+            'student' => redirect()->route('student.dashboard'),
+            default => redirect('/'),
+        };
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }

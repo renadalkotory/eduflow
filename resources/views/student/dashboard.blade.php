@@ -3,7 +3,6 @@
 @section('title', 'Student Dashboard')
 
 @section('content')
-
 <!-- Dashboard Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -19,16 +18,33 @@
 
     </div>
 
-    <div class="date-badge">
+    <div class="d-flex align-items-center gap-3">
 
-        <i class="bi bi-calendar3"></i>
+        <div class="date-badge">
 
-        {{ \Carbon\Carbon::now()->format('M d, Y') }}
+            <i class="bi bi-calendar3"></i>
+
+            {{ \Carbon\Carbon::now()->format('M d, Y') }}
+
+        </div>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button
+                type="submit"
+                class="btn btn-danger">
+
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+
+            </button>
+
+        </form>
 
     </div>
 
 </div>
-
 
 <!-- Statistics -->
 <div class="row g-3 mb-5">
@@ -341,13 +357,11 @@
 
             <div>
 
-                @if($recentQuiz)
+              @if($recentQuiz)
 
-                    <small>
-
-                        {{ \Carbon\Carbon::parse($recentQuiz->created_at)->format('M d, Y') }}
-
-                    </small>
+    <small>
+        {{ \Carbon\Carbon::parse($recentQuiz->attempt_date)->format('M d, Y') }}
+    </small>
 
 
                     <p>
