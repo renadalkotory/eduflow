@@ -46,6 +46,12 @@ Route::get('/cart', [CartController::class, 'index'])
 Route::post('/cart/add', [CartController::class, 'add'])
     ->name('cart.add');
 
+Route::get('/instructor/profile', [InstructorController::class, 'profile'])->name('instructor.profile');
+Route::get('/instructor/courses/create', [InstructorController::class, 'createCourse'])->name('instructor.createCourse');
+Route::get('/instructor/courses/manage', [InstructorController::class, 'manageCourse'])->name('instructor.manageCourse');
+Route::get('/instructor/quiz/create', [InstructorController::class, 'createQuiz'])->name('instructor.createQuiz');
+Route::get('/instructor/grade-tests', [InstructorController::class, 'gradeTests'])->name('instructor.gradeTests');
+
 Route::delete('/cart/remove/{course_id}', [CartController::class, 'remove'])
     ->name('cart.remove');
 
