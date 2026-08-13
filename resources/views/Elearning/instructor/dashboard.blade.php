@@ -36,7 +36,7 @@
                 <span>Dashboard</span>
             </a>
 
-            <a href="#"
+            <a href="{{ route('instructor.manageCourse') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
                 📚
                 <span>My Courses</span>
@@ -48,19 +48,19 @@
                 <span>Students</span>
             </a>
 
-            <a href="#"
+            <a href="{{ route('instructor.createQuiz') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
                 📝
                 <span>Quizzes</span>
             </a>
 
-            <a href="#"
+            <a href="{{ route('instructor.gradeTests') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
                 🎓
                 <span>Grades</span>
             </a>
 
-            <a href="#"
+            <a href="{{ route('instructor.profile') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
                 ⚙️
                 <span>Profile</span>
@@ -118,15 +118,22 @@
         <main class="p-8">
 
             <!-- Welcome -->
-            <div class="mb-8">
+            <div class="mb-8 flex items-center justify-between">
 
-                <h2 class="text-3xl font-bold text-gray-900">
-                    Welcome, {{ auth()->user()->full_name }}!
-                </h2>
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">
+                        Welcome, {{ auth()->user()->full_name }}!
+                    </h2>
 
-                <p class="text-gray-500 mt-2">
-                    Manage your courses and monitor your teaching activity.
-                </p>
+                    <p class="text-gray-500 mt-2">
+                        Manage your courses and monitor your teaching activity.
+                    </p>
+                </div>
+
+                <a href="{{ route('instructor.createCourse') }}"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg text-sm font-semibold whitespace-nowrap">
+                    + Create New Course
+                </a>
 
             </div>
 
