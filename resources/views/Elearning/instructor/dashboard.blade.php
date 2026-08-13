@@ -42,7 +42,7 @@
                 <span>My Courses</span>
             </a>
 
-            <a href="#"
+            <a href="{{ route('instructor.students') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">
                 👨‍🎓
                 <span>Students</span>

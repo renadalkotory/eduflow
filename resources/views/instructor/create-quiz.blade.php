@@ -55,6 +55,11 @@
             Grade Tests
         </a>
 
+        <a class="{{ request()->routeIs('instructor.students') ? 'active' : '' }}"
+        href="{{ route('instructor.students') }}">
+            Students
+        </a>
+
         <a class="{{ request()->routeIs('instructor.profile') ? 'active' : '' }}"
         href="{{ route('instructor.profile') }}">
             Profile

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Course;
 
 class InstructorController extends Controller
@@ -45,5 +46,26 @@ class InstructorController extends Controller
     public function gradeTests()
     {
         return view('instructor.grade-tests');
+    }
+
+    public function students()
+    {
+        $instructorId = auth()->id();
+
+        $students = DB::table('enrollments')
+            ->join('courses', 'enrollments.course_id', '=', 'courses.course_id')
+            ->join('users', 'enrollments.student_id', '=', 'users.user_id')
+            ->where('courses.instructor_id', $instructorId)
+            ->select(
+                'users.user_id',
+                'users.full_name',
+                'users.email',
+                'courses.title as course_title',
+                'enrollments.enrolled_at'
+            )
+            ->orderBy('enrollments.enrolled_at', 'desc')
+            ->get();
+
+        return view('instructor.students', compact('students'));
     }
 }
