@@ -7,7 +7,7 @@
 
     <title>Option Management</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -18,6 +18,8 @@
     <header class="bg-white shadow">
 
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <a href="{{ route('home') }}" class="text-xl font-bold text-blue-600 no-underline">EduFlow</a>
 
             <div>
 
