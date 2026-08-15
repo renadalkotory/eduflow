@@ -50,96 +50,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // Dark mode toggle
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const icon = document.getElementById('themeIcon');
+    const body = document.body;
+
+    const syncIcon = () => {
+      if (icon) icon.className = body.classList.contains('dark-mode') ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+    };
+    syncIcon();
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        syncIcon();
+      });
+    }
 });
-// document.addEventListener('DOMContentLoaded', function () {
-//     const prevBtn = document.getElementById('prevCourse');
-//     const nextBtn = document.getElementById('nextCourse');
-//     const courseRow = document.querySelector('#courses .row');
 
-//     if (!prevBtn || !nextBtn || !courseRow) return;
-
-//     const scrollAmount = 300;
-
-//     prevBtn.addEventListener('click', function () {
-//         courseRow.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-//     });
-
-//     nextBtn.addEventListener('click', function () {
-//         courseRow.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-//     });
-// });
-
-
-// // home page
-// document.addEventListener('DOMContentLoaded', function () {
-//     const prevBtn = document.getElementById('prevCourse');
-//     const nextBtn = document.getElementById('nextCourse');
-//     const courseRow = document.querySelector('#courses .row');
-
-//     if (!prevBtn || !nextBtn || !courseRow) return;
-
-//     const scrollAmount = 300;
-
-//     prevBtn.addEventListener('click', function () {
-//         courseRow.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-//     });
-
-//     nextBtn.addEventListener('click', function () {
-//         courseRow.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-//     });
-// });
-
-
-
-// // login 
-
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     const togglePassword = document.getElementById('togglePassword');
-//     const passwordInput = document.getElementById('password');
-//     const toggleIcon = document.getElementById('toggleIcon');
-
-//     togglePassword.addEventListener('click', function () {
-//         const isPassword = passwordInput.getAttribute('type') === 'password';
-//         passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-//         toggleIcon.classList.toggle('bi-eye');
-//         toggleIcon.classList.toggle('bi-eye-slash');
-//     });
-
-    
-//     const roleTabs = document.querySelectorAll('.role-tab');
-//     const roleInput = document.getElementById('roleInput');
-
-//     roleTabs.forEach(function (tab) {
-//         tab.addEventListener('click', function () {
-//             roleTabs.forEach(function (t) { t.classList.remove('active'); });
-//             tab.classList.add('active');
-//             roleInput.value = tab.getAttribute('data-role');
-//         });
-//     });
-
-// });
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     const roleCards = document.querySelectorAll('.role-card');
-//     const roleInput = document.getElementById('roleInput');
-
-//     roleCards.forEach(card => {
-//         card.addEventListener('click', function () {
-//             roleCards.forEach(c => c.classList.remove('active'));
-//             this.classList.add('active');
-//             roleInput.value = this.dataset.role;
-//         });
-//     });
-
-//     const togglePassword = document.getElementById('togglePassword');
-//     const password = document.getElementById('password');
-//     const toggleIcon = document.getElementById('toggleIcon');
-
-//     togglePassword.addEventListener('click', function () {
-//         const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-//         password.setAttribute('type', type);
-//         toggleIcon.classList.toggle('bi-eye');
-//         toggleIcon.classList.toggle('bi-eye-slash');
-//     });
-// });
+// Apply saved theme immediately (before DOMContentLoaded) to avoid a light-mode flash
+(function () {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+})();

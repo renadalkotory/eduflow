@@ -8,11 +8,7 @@ use App\Models\Enrollment;
 
 class CartController extends Controller
 {
-    /**
-     * Each logged-in student gets their own cart, keyed by their user id.
-     * Guests fall back to a shared 'cart_guest' key (harmless, since guests
-     * can't actually reach add/checkout without logging in first).
-     */
+    
     private function cartKey()
     {
         return Auth::check() ? 'cart_' . Auth::id() : 'cart_guest';
@@ -62,36 +58,46 @@ class CartController extends Controller
             ->with('success', 'Successfully bought!');
     }
 
-    public function add(Request $request)
-    {
-        $validated = $request->validate([
-            'course_id' => 'required',
-            'title' => 'required|string',
-            'category' => 'required|string',
-            'duration' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'nullable|string',
-        ]);
+public function add(Request $request)
+{
+    $validated = $request->validate([
+        'course_id' => 'required',
+        'title' => 'required|string',
+        'category' => 'required|string',
+        'duration' => 'required|string',
+        'price' => 'required|numeric',
+        'image' => 'nullable|string',
+    ]);
 
-        $cart = session($this->cartKey(), []);
+    $alreadyPurchased = Enrollment::where('student_id', Auth::id())
+        ->where('course_id', $validated['course_id'])
+        ->where('payment_status', 'paid')
+        ->exists();
 
-        if (isset($cart[$validated['course_id']])) {
-            $cart[$validated['course_id']]['qty']++;
-        } else {
-            $cart[$validated['course_id']] = [
-                'title' => $validated['title'],
-                'category' => $validated['category'],
-                'duration' => $validated['duration'],
-                'price' => $validated['price'],
-                'image' => $validated['image'] ?? null,
-                'qty' => 1,
-            ];
-        }
-
-        session([$this->cartKey() => $cart]);
-
-        return redirect()->route('cart')->with('success', 'Course added to cart!');
+    if ($alreadyPurchased) {
+        return redirect()->back()
+            ->with('error', "Can't add course to cart, course was already purchased");
     }
+
+    $cart = session($this->cartKey(), []);
+
+    if (isset($cart[$validated['course_id']])) {
+        $cart[$validated['course_id']]['qty']++;
+    } else {
+        $cart[$validated['course_id']] = [
+            'title' => $validated['title'],
+            'category' => $validated['category'],
+            'duration' => $validated['duration'],
+            'price' => $validated['price'],
+            'image' => $validated['image'] ?? null,
+            'qty' => 1,
+        ];
+    }
+
+    session([$this->cartKey() => $cart]);
+
+    return redirect()->route('cart')->with('success', 'Course added to cart!');
+}
 
     public function remove($course_id)
     {

@@ -22,9 +22,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="{{ route('browse.courses') }}">Browse Courses</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#categories">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('categories') }}">Categories</a></li>
       </ul>
       <div class="d-flex align-items-center gap-3">
+        <button class="theme-toggle-btn" id="themeToggleBtn" type="button" title="Toggle dark mode">
+          <i class="bi bi-moon-fill" id="themeIcon"></i>
+        </button>
         <a class="nav-link cart-link position-relative" href="{{ route('cart') }}">
           <i class="bi bi-cart3"></i>
           @if(count($cart) > 0)
@@ -184,3 +187,4 @@
 <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
+

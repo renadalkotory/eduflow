@@ -7,7 +7,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuestionController;
@@ -15,6 +16,35 @@ use App\Http\Controllers\Admin\OptionController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\LessonController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseController;
+
+//browse courses
+Route::get('/categories', [CategoryController::class, 'index'])
+    ->name('categories');
+
+    Route::get('/browse-courses', function () {
+
+    $query = \App\Models\Course::where('status', 'Published');
+
+
+
+    if (request('category_id')) {
+
+        $query->where('category_id', request('category_id'));
+
+    }
+
+
+
+    $courses = $query->get();
+
+    return view('Elearning.browsecourses', compact('courses'));
+
+})->name('browse.courses');
+//////////////////////////////////
+
+Route::get('/courses/{course}', [CourseController::class, 'show'])
+    ->name('courses.show');
 
 Route::get('/', function () {
     return view('Elearning.Landingpage');
@@ -138,22 +168,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ->name('admin.users.destroy');
 
     // Categories
-    Route::get('/admin/categories', [CategoryController::class, 'index'])
+    Route::get('/admin/categories', [AdminCategoryController::class, 'index'])
         ->name('admin.categories.index');
 
-    Route::get('/admin/categories/create', [CategoryController::class, 'create'])
+    Route::get('/admin/categories/create', [AdminCategoryController::class, 'create'])
         ->name('admin.categories.create');
 
-    Route::post('/admin/categories', [CategoryController::class, 'store'])
+    Route::post('/admin/categories', [AdminCategoryController::class, 'store'])
         ->name('admin.categories.store');
 
-    Route::get('/admin/categories/{category}/edit', [CategoryController::class, 'edit'])
+    Route::get('/admin/categories/{category}/edit', [AdminCategoryController::class, 'edit'])
         ->name('admin.categories.edit');
 
-    Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])
+    Route::put('/admin/categories/{category}', [AdminCategoryController::class, 'update'])
         ->name('admin.categories.update');
 
-    Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])
+    Route::delete('/admin/categories/{category}', [AdminCategoryController::class, 'destroy'])
         ->name('admin.categories.destroy');
 
     // Courses (Admin)

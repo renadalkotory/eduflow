@@ -25,12 +25,15 @@
           <a class="nav-link active" href="{{ route('browse.courses') }}">Browse Courses</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('home') }}#categories">Categories</a>
+          <a class="nav-link" href="{{ route('categories') }}">Categories</a>
         </li>
         <li class="nav-item">
         </li>
       </ul>
       <div class="d-flex align-items-center gap-3">
+        <button class="theme-toggle-btn" id="themeToggleBtn" type="button" title="Toggle dark mode">
+          <i class="bi bi-moon-fill" id="themeIcon"></i>
+        </button>
         @auth
           <form method="POST" action="{{ route('logout') }}" class="mb-0">
             @csrf
@@ -110,7 +113,7 @@
     <div class="col-md-6 col-lg-3">
       <div class="course-card h-100">
         <div class="course-img-wrap">
-          <span class="course-tag">{{ $course->category->name ?? 'General' }}</span>
+        <span class="course-tag">{{ $course->category->category_name ?? 'General' }}</span>
           <img src="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80' }}" alt="{{ $course->title }}">
         </div>
         <div class="course-body">
@@ -120,6 +123,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <span class="fw-bold fs-6">{{ $course->price > 0 ? '$' . number_format($course->price, 2) : 'Free' }}</span>
           </div>
+          <a href="{{ route('courses.show', $course->course_id) }}" class="text-primary small fw-semibold text-decoration-none">View Course</a>
           @auth
             <form action="{{ route('cart.add') }}" method="POST" class="mt-3">
               @csrf
@@ -177,5 +181,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/script.js') }}"></script>
+...
+  @if (session('error'))
+    <script>
+      alert(@json(session('error')));
+    </script>
+  @endif
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
 </body>
 </html>
+</body>
+</html>
+
