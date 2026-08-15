@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Course;
@@ -28,10 +28,43 @@ class InstructorController extends Controller
         return view('instructor.profile');
     }
 
-    public function createCourse()
-    {
-        return view('instructor.create-course');
+   public function createCourse()
+{
+    $categories = Category::all();
+    return view('instructor.create-course', compact('categories'));
+}
+
+public function storeCourse(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'category_id' => 'required|exists:categories,category_id',
+        'price' => 'required|numeric|min:0',
+        'status' => 'required|in:Draft,Published',
+        'thumbnail' => 'nullable|image|max:2048',
+    ]);
+
+    $path = null;
+    if ($request->hasFile('thumbnail')) {
+        $path = $request->file('thumbnail')->store('course-thumbnails', 'public');
     }
+
+    Course::create([
+        'instructor_id' => auth()->id(),
+        'category_id' => $validated['category_id'],
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'thumbnail' => $path ? asset('storage/' . $path) : null,
+        'price' => $validated['price'],
+        'views' => 0,
+        'status' => $validated['status'],
+    ]);
+
+    return redirect()
+        ->route('instructor.dashboard')
+        ->with('success', 'Course created successfully!');
+}
 
     public function manageCourse()
     {

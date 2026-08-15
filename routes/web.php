@@ -228,4 +228,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Lessons
     Route::get('/admin/lessons', [LessonController::class, 'index'])
         ->name('admin.lessons.index');
+        
+        Route::post('/instructor/courses', [InstructorController::class, 'storeCourse'])
+    ->name('instructor.courses.store');
 });
